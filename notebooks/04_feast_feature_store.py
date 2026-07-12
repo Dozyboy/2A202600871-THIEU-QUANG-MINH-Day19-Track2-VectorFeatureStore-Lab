@@ -84,8 +84,9 @@ for p in sorted(FEAST_DATA.glob("*.parquet")):
 
 # %%
 import sys
+feast_cmd = str(Path(sys.executable).parent / "feast")
 res = subprocess.run(
-    [sys.executable, "-m", "feast", "apply"],
+    [feast_cmd, "apply"],
     cwd=str(FEAST_DIR),
     capture_output=True, text=True, check=False,
 )
@@ -105,7 +106,7 @@ assert res.returncode == 0, f"feast apply failed: {res.stderr}"
 # %%
 end_dt = NOW.strftime("%Y-%m-%dT%H:%M:%S")
 res = subprocess.run(
-    [sys.executable, "-m", "feast", "materialize-incremental", end_dt],
+    [feast_cmd, "materialize-incremental", end_dt],
     cwd=str(FEAST_DIR),
     capture_output=True, text=True, check=False,
 )
